@@ -1,4 +1,4 @@
-# 체크리스트
+# Audit CheckList
 
 ### 기본 확인 사항
 
@@ -111,16 +111,18 @@
   | suicide | selfdestruct | https://eips.ethereum.org/EIPS/eip-6 |
   |  sha3   |  keccack256  |
 
-- [ ] 인증
-  > 말하는 인증 메커니즘이 뭘까
-  - tx.origin을 인증 메커니즘으로 사용하면 안된다.
+- [ ] 사용자 인증 [링크](https://docs.soliditylang.org/en/v0.8.13/security-considerations.html?highlight=tx.origin#tx-origin)
+  - 컨트랙트 내부에서 사용자에 대한 인증은 항상 `msg.sender`를 사용해야합니다.
+  - `tx.origin`을 인증 메커니즘에 사용하면 안됩니다.
+  - tx.origin은 최초 실행주소이기때문에, 공격컨트랙트 등을 실행하더라도, 최초 실행주소가 owner일 경우에 치명적인 공격을 허용할 수 있습니다.
+  - https://swcregistry.io/docs/SWC-115
 
 ### Fail-over
 
 - [ ] 데이터와 로직을 다루는 컨트랙트가 분리되어있는지 확인합니다. ([프록시 패턴](https://blog.openzeppelin.com/proxy-patterns/))
 - [ ] 어떤 상황이 가장 치명적일지 가정해야합니다.
 - [ ] 민감한 변수에 대해서 assert 로직이 있는지 체크해야합니다.
-- [ ] 인출 등 중요한 로직이 실행되기까지 일정 텀을 두어, 악의적 행동이 발생했을 때, 대응할 수 있도록한다. ([Speed bump](https://consensys.github.io/smart-contract-best-practices/development-recommendations/precautions/speed-bumps/))
+- [ ] 인출 등 중요한 로직이 실행되기까지 일정 텀을 두어(lock up), 악의적 행동이 발생했을 때, 대응할 수 있도록한다. ([Speed bump](https://consensys.github.io/smart-contract-best-practices/development-recommendations/precautions/speed-bumps/))
 - [ ] 최악의 상황에서 로직실행을 멈출 수 있는 circuit breaker가 있는지 확인해야합니다. ([pausable](https://docs.openzeppelin.com/contracts/2.x/api/lifecycle))
 
 ### 주의깊게 봐야하는 부분
@@ -136,10 +138,19 @@
 
 ### Reference
 
-- [Solidity docs 보안 측 고려사항](https://docs.soliditylang.org/en/v0.8.13/security-considerations.html)
-- [Decentralized Application Security Project(DASP)](https://dasp.co/#item-1)
-- [cryptofindlab/audit-checklist](https://github.com/cryptofinlabs/audit-checklist)
-- [스마트컨트랙트 취약점 분류(SWC)](https://swcregistry.io/docs/SWC-100)
-- [TechRate Audit Example](https://github.com/TechRate/Smart-Contract-Audits)
-- [SmartContract Bad case](https://github.com/crytic/not-so-smart-contracts)
-- [Solidity Pattern](https://github.com/fravoll/solidity-patterns)
+- 정리완료
+
+  - [cryptofindlab/audit-checklist](https://github.com/cryptofinlabs/audit-checklist)
+  - [Dangerous attack in solidity](https://medium.com/ethereum-developers/how-to-audit-a-smart-contract-most-dangerous-attacks-in-solidity-ae402a7e7868)
+
+- 정리중
+
+  - [Solidity docs 보안 측 고려사항](https://docs.soliditylang.org/en/v0.8.13/security-considerations.html)
+
+- 참고자료
+  - [solidity-by-example](https://solidity-by-example.org/)
+  - [SmartContract Bad case](https://github.com/crytic/not-so-smart-contracts)
+  - [Solidity Pattern](https://github.com/fravoll/solidity-patterns)
+  - [TechRate Audit Example](https://github.com/TechRate/Smart-Contract-Audits)
+  - [스마트컨트랙트 취약점 분류(SWC)](https://swcregistry.io/docs/SWC-100)
+  - [Decentralized Application Security Project(DASP)](https://dasp.co/#item-1)
